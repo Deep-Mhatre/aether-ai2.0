@@ -52,26 +52,57 @@ function Dashboard() {
     }
 
     return (
-        <div className='min-h-screen bg-[#050505] text-white'>
-            <div className='sticky top-0 z-40 backdrop-blur-xl bg-black/50 border-b border-white/10'>
+        <div className='min-h-screen bg-[#0C0414] text-white overflow-hidden'>
+            <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&display=swap');
+          h1, h2, h3{
+            font-family: "Ibarra Real Nova", serif;
+          }
+          p, a, button{
+            font-family: 'Inter', sans-serif;
+          }
+          
+          @keyframes shine {
+              0% {
+                  background-position: 0% 50%;
+              }
+              50% {
+                  background-position: 100% 50%;
+              }
+              100% {
+                  background-position: 0% 50%;
+              }
+          }
+          
+          .button-bg {
+              background: conic-gradient(from 0deg, #00F5FF, #000, #000, #00F5FF, #000, #000, #000, #00F5FF);
+              background-size: 300% 300%;
+              animation: shine 6s ease-out infinite;
+          }
+        `}
+      </style>
+            <div className='sticky top-0 z-40 backdrop-blur-xl bg-black/40 border-b border-white/10'>
                 <div className='max-w-7xl mx-auto px-6 h-16 flex items-center justify-between'>
                     <div className='flex items-center gap-4'>
-                        <button className='p-2 rounded-lg hover:bg-white/10 transition' onClick={() => navigate("/")}><ArrowLeft size={16} /></button>
-                        <h1 className='text-lg font-semibold'>Dashboard</h1>
+                        <button className='p-2 rounded-lg hover:bg-white/10 transition' onClick={() => navigate("/")}><ArrowLeft size={20} /></button>
+                        <h1 className='text-xl font-semibold'>Dashboard</h1>
                     </div>
-                    <button className='px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold hover:scale-105 transition' onClick={() => navigate("/generate")}>
-                        + New Website
-                    </button>
+                    <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
+                      <button className='px-6 py-2.5 rounded-full text-sm text-white font-semibold bg-gray-800' onClick={() => navigate("/generate")}>
+                          + New Website
+                      </button>
+                    </div>
                 </div>
             </div>
-            <div className='max-w-7xl mx-auto px-6 py-10'>
+            <div className='max-w-7xl mx-auto px-6 py-12'>
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-10"
+                    className="mb-12"
                 >
-                    <p className='text-sm text-zinc-400 mb-1'>Welcome Back</p>
-                    <h1 className='text-3xl font-bold'>{userData.name}</h1>
+                    <p className='text-sm text-zinc-400 mb-2'>Welcome Back</p>
+                    <h2 className='text-4xl md:text-5xl font-bold bg-linear-to-r from-[#F5F5F5] to-[#F5F5F5] text-transparent bg-clip-text'>{userData.name}</h2>
                 </motion.div>
 
                 {loading && (
@@ -87,7 +118,7 @@ function Dashboard() {
                 )}
 
                 {!loading && !error && websites?.length > 0 && (
-                    <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                         {websites.map((w, i) => {
 
                             const copied = copiedId === w._id
@@ -101,7 +132,7 @@ function Dashboard() {
                                
                                 className="rounded-2xl bg-white/5 border border-white/10 overflow-hidden hover:bg-white/10 transition flex flex-col"
                             >
-                                <div className='relative h-40 bg-black cursor-pointer'  onClick={()=>navigate(`/editor/${w._id}`)}>
+                                <div className='relative h-44 bg-black cursor-pointer'  onClick={()=>navigate(`/editor/${w._id}`)}>
                                     <iframe srcDoc={w.latestCode} className='absolute inset-0 w-[140%] h-[140%] scale-[0.72] origin-top-left pointer-events-none bg-white' />
                                     <div className='absolute inset-0 bg-black/30' />
                                 </div>
@@ -113,20 +144,18 @@ function Dashboard() {
                                     </p>
 
                                     {!w.deployed ? (
-                                        <button className=" mt-auto flex items-center justify-center gap-2
-                          px-4 py-2 rounded-xl text-sm font-semibold
-                          bg-gradient-to-r from-indigo-500 to-purple-500
-                          hover:scale-105 transition
-                        "
-                                            onClick={() => handleDeploy(w._id)}
+                                        <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100 mt-auto">
+                                          <button className="flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-gray-800 text-white w-full"
+                                              onClick={() => handleDeploy(w._id)}
 
-                                        ><Rocket size={18} /> Deploy</button>
+                                          ><Rocket size={18} /> Deploy</button>
+                                        </div>
                                     ) : (<motion.button
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => handleCopy(w)}
                                         className={`
                           mt-auto flex items-center justify-center gap-2
-                          px-4 py-2 rounded-xl text-sm font-medium
+                          px-4 py-2 rounded-lg text-sm font-medium
                           transition-all
                           ${copied
                                                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"

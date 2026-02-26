@@ -8,6 +8,7 @@ import Generate from './pages/Generate'
 import WebsiteEditor from './pages/Editor'
 import LiveSite from './pages/LiveSite'
 import Pricing from './pages/Pricing'
+import Features from './pages/Features'
 
 export const serverUrl="http://localhost:5000"
 function App() {
@@ -21,7 +22,8 @@ function App() {
      <Route path='/generate' element={userData?<Generate/>:<Home/>}/>
      <Route path='/editor/:id' element={userData?<WebsiteEditor/>:<Home/>}/>
       <Route path='/site/:id' element={<LiveSite/>}/>
-       <Route path='/pricing' element={<Pricing/>}/>
+      <Route path='/pricing' element={<Pricing/>}/>
+      <Route path='/features' element={<Features/>}/>
    </Routes>
    </BrowserRouter>
   )
