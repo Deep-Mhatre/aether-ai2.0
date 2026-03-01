@@ -213,7 +213,7 @@ function Home() {
 
 
             {userData && websites?.length > 0 && (
-                <section className='max-w-7xl mx-auto px-6 pb-32'>
+                <section className='max-w-7xl mx-auto px-6 pb-32 mt-16'>
                     <h3 className='text-2xl font-semibold mb-6'>Your Websites</h3>
 
                     <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
@@ -249,7 +249,7 @@ function Home() {
 
 
             <footer className='border-t border-white/10 py-10 text-center text-sm text-zinc-500'>
-                &copy; {new Date().getFullYear()} GenWeb.ai
+                &copy; {new Date().getFullYear()} Aether AI
             </footer>
 
             {openLogin && <LoginModal open={openLogin} onClose={() => setOpenLogin(false)} />}
