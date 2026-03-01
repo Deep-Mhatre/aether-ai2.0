@@ -42,20 +42,41 @@ function Community() {
           p, a, button{
             font-family: 'Inter', sans-serif;
           }
+          @keyframes shine {
+              0% {
+                  background-position: 0% 50%;
+              }
+              50% {
+                  background-position: 100% 50%;
+              }
+              100% {
+                  background-position: 0% 50%;
+              }
+          }
+
+          .button-bg {
+              background: conic-gradient(from 0deg, #00F5FF, #000, #000, #00F5FF, #000, #000, #000, #00F5FF);
+              background-size: 300% 300%;
+              animation: shine 6s ease-out infinite;
+          }
         `}
       </style>
 
       <div className="sticky top-0 z-40 backdrop-blur-xl bg-black/40 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button className="p-2 rounded-lg hover:bg-white/10 transition" onClick={() => navigate("/")}>
-              Home
-            </button>
+            <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
+              <button className="px-4 py-2 rounded-full text-sm bg-gray-800 text-white" onClick={() => navigate("/")}>
+                Home
+              </button>
+            </div>
             <h1 className="text-xl font-semibold">Community</h1>
           </div>
-          <button className="px-4 py-2 rounded-full text-sm bg-gray-800 text-white" onClick={() => navigate("/dashboard")}>
-            Dashboard
-          </button>
+          <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
+            <button className="px-4 py-2 rounded-full text-sm bg-gray-800 text-white" onClick={() => navigate("/dashboard")}>
+              Dashboard
+            </button>
+          </div>
         </div>
       </div>
 
