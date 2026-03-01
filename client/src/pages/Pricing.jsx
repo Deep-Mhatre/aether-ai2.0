@@ -111,10 +111,14 @@ try {
                 <div className='absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600/20 rounded-full blur-[120px]' />
             </div>
 
-            <button className='relative z-10 mb-8 flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition' onClick={() => navigate("/")}>
-                <ArrowLeft size={16} />
-                Back
-            </button>
+            <div className="relative z-10 mb-8 inline-flex">
+                <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
+                    <button className='flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-gray-800 text-white' onClick={() => navigate("/")}>
+                        <ArrowLeft size={16} />
+                        Back
+                    </button>
+                </div>
+            </div>
             <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}

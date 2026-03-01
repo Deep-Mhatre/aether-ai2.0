@@ -110,8 +110,11 @@ function Features() {
                         <div className="flex items-center gap-6 text-sm">
                             <a href="/features" className="text-white">Features</a>
                             <a href="/pricing" className="text-zinc-400 hover:text-white">Pricing</a>
+                            <a href="/community" className="text-zinc-400 hover:text-white">Community</a>
                             {userData && (
-                                <button onClick={() => navigate("/dashboard")} className="text-zinc-400 hover:text-white transition">Dashboard</button>
+                                <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
+                                    <button onClick={() => navigate("/dashboard")} className="px-4 py-2 rounded-full text-sm bg-gray-800 text-white">Dashboard</button>
+                                </div>
                             )}
                         </div>
                         {!userData ? (

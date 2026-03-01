@@ -43,6 +43,18 @@ const websiteSchema=new mongoose.Schema({
         unique:true,
         sparse: true,
     }
+    ,
+    isPublished:{
+        type:Boolean,
+        default:false
+    },
+    publishedAt:{
+        type:Date
+    },
+    publishedBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }
 
 },{timestamps:true})
 

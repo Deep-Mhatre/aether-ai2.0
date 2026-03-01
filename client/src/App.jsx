@@ -9,6 +9,7 @@ import WebsiteEditor from './pages/Editor'
 import LiveSite from './pages/LiveSite'
 import Pricing from './pages/Pricing'
 import Features from './pages/Features'
+import Community from './pages/Community'
 
 export const serverUrl="http://localhost:5000"
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path='/site/:id' element={<LiveSite/>}/>
       <Route path='/pricing' element={<Pricing/>}/>
       <Route path='/features' element={<Features/>}/>
+      <Route path='/community' element={<Community/>}/>
    </Routes>
    </BrowserRouter>
   )

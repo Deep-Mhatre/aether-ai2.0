@@ -12,6 +12,8 @@ function Dashboard() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [copiedId, setCopiedId] = useState(null)
+    const [publishingId, setPublishingId] = useState(null)
+    const [unpublishingId, setUnpublishingId] = useState(null)
     const handleDeploy = async (id) => {
         try {
             const result = await axios.get(`${serverUrl}/api/website/deploy/${id}`, { withCredentials: true })
@@ -49,6 +51,38 @@ function Dashboard() {
         await navigator.clipboard.writeText(site.deployUrl)
         setCopiedId(site._id)
         setTimeout(() => setCopiedId(null), 2000)
+    }
+
+    const handlePublish = async (site) => {
+        const confirmPublish = window.confirm("Publish this website to the community?")
+        if (!confirmPublish) return
+        setPublishingId(site._id)
+        try {
+            const result = await axios.post(`${serverUrl}/api/website/publish/${site._id}`, {}, { withCredentials: true })
+            setWebsites((prev) =>
+                prev.map((w) => (w._id === site._id ? result.data.website : w))
+            )
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setPublishingId(null)
+        }
+    }
+
+    const handleUnpublish = async (site) => {
+        const confirmUnpublish = window.confirm("Remove this website from the community?")
+        if (!confirmUnpublish) return
+        setUnpublishingId(site._id)
+        try {
+            const result = await axios.delete(`${serverUrl}/api/website/unpublish/${site._id}`, { withCredentials: true })
+            setWebsites((prev) =>
+                prev.map((w) => (w._id === site._id ? result.data.website : w))
+            )
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setUnpublishingId(null)
+        }
     }
 
     return (
@@ -142,6 +176,11 @@ function Dashboard() {
                                     <p className='text-xs text-zinc-400'>Last Updated {""}
                                         {new Date(w.updatedAt).toLocaleDateString()}
                                     </p>
+                                    {w.isPublished && (
+                                        <div className="text-xs text-emerald-400">
+                                            Published {w.publishedAt ? new Date(w.publishedAt).toLocaleDateString() : ""}
+                                        </div>
+                                    )}
 
                                     {!w.deployed ? (
                                         <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100 mt-auto">
@@ -175,6 +214,24 @@ function Dashboard() {
                                         </>
                                         }
                                     </motion.button>)}
+
+                                    {!w.isPublished ? (
+                                        <button
+                                            className="mt-2 px-4 py-2 rounded-lg text-sm font-medium bg-white/10 hover:bg-white/20 border border-white/10"
+                                            onClick={() => handlePublish(w)}
+                                            disabled={publishingId === w._id}
+                                        >
+                                            {publishingId === w._id ? "Publishing..." : "Publish to Community"}
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="mt-2 px-4 py-2 rounded-lg text-sm font-medium bg-red-500/10 text-red-300 hover:bg-red-500/20 border border-red-500/30"
+                                            onClick={() => handleUnpublish(w)}
+                                            disabled={unpublishingId === w._id}
+                                        >
+                                            {unpublishingId === w._id ? "Unpublishing..." : "Unpublish"}
+                                        </button>
+                                    )}
 
                                 </div>
 

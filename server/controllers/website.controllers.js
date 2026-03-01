@@ -372,3 +372,78 @@ export const getBySlug=async (req,res) => {
         return res.status(500).json({ message: `get by slug website error ${error}` })
     }
 }
+
+export const publishWebsite = async (req, res) => {
+    try {
+        const website = await Website.findOne({
+            _id: req.params.id,
+            user: req.user._id
+        })
+
+        if (!website) {
+            return res.status(400).json({ message: "website not found" })
+        }
+
+        if (!website.slug) {
+            website.slug = website.title.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 60) + website._id.toString().slice(-5)
+        }
+
+        website.isPublished = true
+        website.publishedAt = new Date()
+        website.publishedBy = req.user._id
+        await website.save()
+
+        return res.status(200).json({ message: "published", website })
+    } catch (error) {
+        return res.status(500).json({ message: `publish website error ${error}` })
+    }
+}
+
+export const unpublishWebsite = async (req, res) => {
+    try {
+        const website = await Website.findOne({
+            _id: req.params.id,
+            user: req.user._id
+        })
+
+        if (!website) {
+            return res.status(400).json({ message: "website not found" })
+        }
+
+        website.isPublished = false
+        website.publishedAt = null
+        website.publishedBy = null
+        await website.save()
+
+        return res.status(200).json({ message: "unpublished", website })
+    } catch (error) {
+        return res.status(500).json({ message: `unpublish website error ${error}` })
+    }
+}
+
+export const getCommunity = async (req, res) => {
+    try {
+        const page = Math.max(parseInt(req.query.page || "1", 10), 1)
+        const limit = Math.min(Math.max(parseInt(req.query.limit || "12", 10), 1), 50)
+        const skip = (page - 1) * limit
+        const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+
+        const query = {
+            isPublished: true,
+            publishedAt: { $gte: cutoff }
+        }
+
+        const [items, total] = await Promise.all([
+            Website.find(query)
+                .sort({ publishedAt: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("publishedBy", "name"),
+            Website.countDocuments(query)
+        ])
+
+        return res.status(200).json({ items, page, limit, total })
+    } catch (error) {
+        return res.status(500).json({ message: `get community error ${error}` })
+    }
+}

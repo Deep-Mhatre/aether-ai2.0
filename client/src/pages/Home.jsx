@@ -7,6 +7,7 @@ import { serverUrl } from '../App'
 import axios from 'axios'
 import { setUserData } from '../redux/userSlice'
 import { useNavigate } from 'react-router-dom'
+import aetherLogo from '../assets/AetherAI Final logo .png'
 function Home() {
 
     const highlights = [
@@ -92,6 +93,7 @@ function Home() {
             <div id="menu" className={`${mobileOpen ? 'max-md:w-full' : 'max-md:w-0'} max-md:fixed max-md:top-0 max-md:z-50 max-md:left-0 max-md:transition-all max-md:duration-300 max-md:overflow-hidden max-md:h-screen max-md:bg-black/50 max-md:backdrop-blur max-md:flex-col max-md:justify-center flex items-center gap-8 text-sm`}>
               <a href="/features" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Features</a>
               <a href="/pricing" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Pricing</a>
+              <a href="/community" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Community</a>
 
               <button id="close-menu" onClick={() => setMobileOpen(false)} className="md:hidden bg-gray-900 hover:bg-gray-800 text-white p-2 rounded-md aspect-square font-medium transition">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
