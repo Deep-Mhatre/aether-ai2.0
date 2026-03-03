@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { store } from './redux/store.js'
 import axios from "axios"
 
-const LOG_ENDPOINT = "http://localhost:5000/api/logs/client"
+const LOG_ENDPOINT = `${serverUrl}/api/logs/client`
 
 const sendClientLog = (payload) => {
   try {
