@@ -4,6 +4,7 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import { store } from './redux/store.js'
 import axios from "axios"
+import { serverUrl } from './App.jsx'
 
 const LOG_ENDPOINT = `${serverUrl}/api/logs/client`
 
