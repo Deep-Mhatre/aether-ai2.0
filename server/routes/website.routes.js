@@ -14,6 +14,4 @@ websiteRouter.get("/deploy/:id",isAuth,deploy)
 websiteRouter.get("/get-by-slug/:slug",getBySlug)
 websiteRouter.post("/publish/:id",isAuth,publishWebsite)
 websiteRouter.delete("/unpublish/:id",isAuth,unpublishWebsite)
-websiteRouter.get("/community",getCommunity)
-
 export default websiteRouter

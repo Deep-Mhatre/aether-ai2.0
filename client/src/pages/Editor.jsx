@@ -24,11 +24,11 @@ function WebsiteEditor() {
     const [showFullPreview, setShowFullPreview] = useState(false)
     const [showChat, setShowChat] = useState(false)
     const thinkingSteps = [
-        "Understanding your request…",
-        "Planning layout changes…",
-        "Improving responsiveness…",
-        "Applying animations…",
-        "Finalizing update…",
+        "Understanding your request...",
+        "Planning layout changes...",
+        "Improving responsiveness...",
+        "Applying animations...",
+        "Finalizing update...",
     ]
     const handleUpdate = async () => {
         if (!prompt) return
@@ -75,10 +75,10 @@ function WebsiteEditor() {
                 setWebsite(result.data)
                 setCode(result.data.latestCode)
                 setMessages(result.data.conversation)
-            } catch (error) {
-                console.log(error)
-                setError(error.response.data.message)
-            }
+        } catch (error) {
+            console.log(error)
+            setError(error?.response?.data?.message || "something went wrong")
+        }
         }
         handleGetWebsite()
     }, [id])
@@ -325,3 +325,4 @@ function WebsiteEditor() {
 
 
 export default WebsiteEditor
+

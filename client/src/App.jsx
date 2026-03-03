@@ -19,9 +19,9 @@ function App() {
    <BrowserRouter>
    <Routes>
     <Route path='/' element={<Home/>}/>
-    <Route path='/dashboard' element={userData?<Dashboard/>:<Home/>}/>
-     <Route path='/generate' element={userData?<Generate/>:<Home/>}/>
-     <Route path='/editor/:id' element={userData?<WebsiteEditor/>:<Home/>}/>
+    <Route path='/dashboard' element={userData?<Dashboard/>:<Navigate to="/" replace />}/>
+     <Route path='/generate' element={userData?<Generate/>:<Navigate to="/" replace />}/>
+     <Route path='/editor/:id' element={userData?<WebsiteEditor/>:<Navigate to="/" replace />}/>
       <Route path='/site/:id' element={<LiveSite/>}/>
       <Route path='/pricing' element={<Pricing/>}/>
       <Route path='/features' element={<Features/>}/>

@@ -6,7 +6,7 @@ import { Coins } from "lucide-react"
 import { serverUrl } from '../App'
 import axios from 'axios'
 import { setUserData } from '../redux/userSlice'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import aetherLogo from '../assets/AetherAI Final logo .png'
 function Home() {
 
@@ -15,19 +15,12 @@ function Home() {
         "Fully Responsive Layouts",
         "Production Ready Output",
     ]
-    const promptExamples = [
-        "Design a dark SaaS landing page for a productivity app with pricing and testimonials.",
-        "Create a portfolio website for a UI designer with case studies and contact section.",
-        "Build a landing page for a new cafe with menu, location map, and reservation CTA."
-    ]
 
     const [openLogin, setOpenLogin] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const { userData } = useSelector(state => state.user)
     const [openProfile, setOpenProfile] = useState(false)
     const [websites, setWebsites] = useState(null)
-    const [communitySites, setCommunitySites] = useState([])
-    const [heroPrompt, setHeroPrompt] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleLogOut = async () => {
@@ -36,6 +29,7 @@ function Home() {
             await axios.get(`${serverUrl}/api/auth/logout`, { withCredentials: true })
             dispatch(setUserData(null))
             setOpenProfile(false)
+            navigate("/")
         } catch (error) {
             console.log(error)
         }
@@ -57,28 +51,6 @@ function Home() {
         }
         handleGetAllWebsites()
     }, [userData])
-
-    useEffect(() => {
-        const handleGetCommunity = async () => {
-            try {
-                const result = await axios.get(`${serverUrl}/api/community?page=1&limit=3`)
-                setCommunitySites(result.data.items || [])
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        handleGetCommunity()
-    }, [])
-
-    const handleHeroGenerate = () => {
-        if (!userData) {
-            setOpenLogin(true)
-            return
-        }
-        if (!heroPrompt.trim()) return
-        localStorage.setItem("aether_prompt", heroPrompt.trim())
-        navigate("/generate")
-    }
     return (
         <div className='relative min-h-screen bg-[#0C0414] text-white overflow-hidden'>
             <style>
@@ -114,20 +86,20 @@ function Home() {
 
         <nav className="flex flex-col items-center w-full" >
           <div className="flex items-center justify-between p-4 md:px-16 lg:px-24 xl:px-32 md:py-4 w-full">
-            <a href="/">
+            <Link to="/">
               <img src={aetherLogo} alt="AetherAI logo" className="w-32 md:w-30 lg:w-48 object-contain" />
-            </a>
+            </Link>
             <div className="hidden md:flex flex-1 items-center justify-center">
               <div className="flex items-center gap-8 text-sm">
-                <a href="/features" className="hover:text-white/80">Features</a>
-                <a href="/pricing" className="hover:text-white/80">Pricing</a>
-                <a href="/community" className="hover:text-white/80">Community</a>
+                <Link to="/features" className="hover:text-white/80">Features</Link>
+                <Link to="/pricing" className="hover:text-white/80">Pricing</Link>
+                <Link to="/community" className="hover:text-white/80">Community</Link>
               </div>
             </div>
             <div id="menu" className={`${mobileOpen ? 'max-md:w-full' : 'max-md:w-0'} max-md:fixed max-md:top-0 max-md:z-50 max-md:left-0 max-md:transition-all max-md:duration-300 max-md:overflow-hidden max-md:h-screen max-md:bg-black/50 max-md:backdrop-blur max-md:flex-col max-md:justify-center md:hidden flex items-center gap-8 text-sm`}>
-              <a href="/features" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Features</a>
-              <a href="/pricing" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Pricing</a>
-              <a href="/community" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Community</a>
+              <Link to="/features" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Features</Link>
+              <Link to="/pricing" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Pricing</Link>
+              <Link to="/community" onClick={() => setMobileOpen(false)} className="hover:text-white/80">Community</Link>
 
               <button id="close-menu" onClick={() => setMobileOpen(false)} className="md:hidden bg-gray-900 hover:bg-gray-800 text-white p-2 rounded-md aspect-square font-medium transition">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -189,50 +161,30 @@ function Home() {
           </div>
         </nav>
 
-                <div className="p-px rounded-full bg-linear-to-r from-indigo-900 to-[#5F5F5F] mt-28">
+        <div className="p-px rounded-full bg-linear-to-r from-indigo-900 to-[#5F5F5F] mt-32">
           <div className="flex flex-wrap items-center justify-center gap-2 p-2 px-4 rounded-full bg-[#0C0414]">
             <p className="text-sm text-slate-200">AI-Powered Website Generator</p>
           </div>
         </div>
 
-        <h1 className="text-4xl md:text-[64px]/[70px] text-center max-w-4xl mt-6 bg-linear-to-r from-[#231233] via-[#F5F5F5] to-[#231233] text-transparent bg-clip-text leading-tight px-4">
-          Generate & Publish Websites in Minutes
+        <h1 className="text-4xl md:text-[66px]/[72px] text-center max-w-4xl mt-6 bg-linear-to-r from-[#231233] via-[#F5F5F5] to-[#231233] text-transparent bg-clip-text leading-tight px-4">
+          Design, Build & Launch Websites with AI in Minutes
         </h1>
-        <p className="text-sm md:text-base text-slate-200/70 text-center max-w-lg mt-3 px-4">
-          1 prompt - live site. Built for solo creators and indie builders.
+        <p className="text-sm md:text-base bg-linear-to-r from-[#231233] via-[#F5F5F5] to-[#231233] text-transparent bg-clip-text text-center max-w-lg mt-4 px-4">
+          Create production-ready websites and UI components instantly with AI-generated layouts, code and design systems.
         </p>
 
-        <div className="w-full max-w-3xl px-4 mt-6">
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-4 md:p-5">
-            <textarea
-              value={heroPrompt}
-              onChange={(e) => setHeroPrompt(e.target.value)}
-              placeholder="Describe your website in one or two sentences..."
-              className="w-full h-24 md:h-28 bg-transparent text-sm md:text-base text-white placeholder-zinc-500 outline-none resize-none"
-            />
-            <div className="flex flex-wrap gap-2 mt-3">
-              {promptExamples.map((ex, i) => (
-                <button
-                  key={i}
-                  onClick={() => setHeroPrompt(ex)}
-                  className="text-xs text-zinc-300 border border-white/10 bg-white/5 hover:bg-white/10 rounded-full px-3 py-1"
-                >
-                  {`Example ${i + 1}`}
-                </button>
-              ))}
+        <div className='flex gap-3 mt-7'>
+          {!userData && (
+            <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
+              <button className="px-6 py-3 text-xs md:text-sm text-white rounded-full font-medium bg-gray-800" onClick={() => setOpenLogin(true)}>
+                Get Started
+              </button>
             </div>
-          </div>
-        </div>
-
-        <div className='flex flex-wrap gap-3 mt-6 justify-center'>
+          )}
           <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
-            <button className="px-6 py-3 text-xs md:text-sm text-white rounded-full font-medium bg-gray-800" onClick={handleHeroGenerate}>
-              Generate Your Website
-            </button>
-          </div>
-          <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
-            <button className="px-6 py-3 text-xs md:text-sm text-white rounded-full font-medium bg-gray-800" onClick={() => userData? navigate("/dashboard"):setOpenLogin(true)}>
-              {userData ? "Explore Dashboard" : "Explore Templates"}
+            <button className="px-6 py-3 text-xs md:text-sm text-white rounded-full font-medium bg-gray-800" onClick={() => userData ? navigate("/dashboard") : setOpenLogin(true)}>
+              {userData ? "Explore Dashboard" : "Explore templates"}
             </button>
           </div>
         </div>
@@ -253,7 +205,7 @@ function Home() {
                         >
                             <h1 className='text-xl font-semibold mb-3'>{h}</h1>
                             <p className='text-sm text-zinc-400'>
-                                GenWeb.ai builds real websites — clean code,
+                                GenWeb.ai builds real websites -- clean code,
                                 animations, responsiveness and scalable structure.
                             </p>
 
@@ -310,10 +262,3 @@ function Home() {
 }
 
 export default Home
-
-
-
-
-
-
-

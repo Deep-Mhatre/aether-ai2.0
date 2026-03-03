@@ -1,5 +1,15 @@
 import User from "../models/user.model.js"
 import jwt from "jsonwebtoken"
+
+const cookieOptions = () => {
+    const isProd = process.env.NODE_ENV === "production"
+    return {
+        httpOnly: true,
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    }
+}
 export const googleAuth=async (req,res)=>{
 try {
     const {name,email,avatar}=req.body
@@ -14,12 +24,7 @@ try {
     }
     const token=await jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"})
 
-    res.cookie("token",token,{
-        httpOnly:true,
-        secure:false,
-        sameSite:"lax",
-        maxAge:7*24*60*60*1000
-    })
+    res.cookie("token", token, cookieOptions())
 
     return res.status(200).json(user)
 } catch (error) {
@@ -31,11 +36,7 @@ try {
 
 export const logOut=async (req,res)=>{
 try {
-     res.clearCookie("token",{
-        httpOnly:true,
-        secure:false,
-        sameSite:"lax"
-    })
+     res.clearCookie("token", cookieOptions())
 
     return res.status(200).json({message :"log out successfully"})
 } catch (error) {

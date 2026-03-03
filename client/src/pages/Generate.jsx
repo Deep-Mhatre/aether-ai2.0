@@ -7,11 +7,11 @@ import axios from "axios"
 import { serverUrl } from '../App'
 
 const PHASES = [
-    "Analyzing your idea…",
-    "Designing layout & structure…",
-    "Writing HTML & CSS…",
-    "Adding animations & interactions…",
-    "Final quality checks…",
+    "Analyzing your idea...",
+    "Designing layout & structure...",
+    "Writing HTML & CSS...",
+    "Adding animations & interactions...",
+    "Final quality checks...",
 ];
 function Generate() {
     const navigate = useNavigate()
@@ -30,7 +30,7 @@ function Generate() {
             navigate(`/editor/${result.data.websiteId}`)
         } catch (error) {
             setLoading(false)
-            setError(error.response.data.message || "something went wrong")
+            setError(error?.response?.data?.message || "something went wrong")
             console.log(error)
         }
     }
@@ -178,7 +178,7 @@ function Generate() {
                         <div className='text-center text-xs text-zinc-400 mt-4'>
                             Estimated time remaining:{" "}
                             <span className="text-white font-medium">
-                                ~8–12 minutes
+                                ~8-12 minutes
                             </span>
                         </div>
 
@@ -192,3 +192,4 @@ function Generate() {
 }
 
 export default Generate
+
