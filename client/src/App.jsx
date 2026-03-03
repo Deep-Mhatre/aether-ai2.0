@@ -11,7 +11,7 @@ import Pricing from './pages/Pricing'
 import Features from './pages/Features'
 import Community from './pages/Community'
 
-export const serverUrl="http://localhost:5000"
+export const serverUrl= import.meta.env.VITE_SERVER_URL || "http://localhost:5000"
 function App() {
   useGetCurrentUser()
   const {userData}=useSelector(state=>state.user)

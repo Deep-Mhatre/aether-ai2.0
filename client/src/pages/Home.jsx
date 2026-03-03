@@ -15,12 +15,19 @@ function Home() {
         "Fully Responsive Layouts",
         "Production Ready Output",
     ]
+    const promptExamples = [
+        "Design a dark SaaS landing page for a productivity app with pricing and testimonials.",
+        "Create a portfolio website for a UI designer with case studies and contact section.",
+        "Build a landing page for a new cafe with menu, location map, and reservation CTA."
+    ]
 
     const [openLogin, setOpenLogin] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const { userData } = useSelector(state => state.user)
     const [openProfile, setOpenProfile] = useState(false)
     const [websites, setWebsites] = useState(null)
+    const [communitySites, setCommunitySites] = useState([])
+    const [heroPrompt, setHeroPrompt] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleLogOut = async () => {
@@ -50,6 +57,28 @@ function Home() {
         }
         handleGetAllWebsites()
     }, [userData])
+
+    useEffect(() => {
+        const handleGetCommunity = async () => {
+            try {
+                const result = await axios.get(`${serverUrl}/api/community?page=1&limit=3`)
+                setCommunitySites(result.data.items || [])
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        handleGetCommunity()
+    }, [])
+
+    const handleHeroGenerate = () => {
+        if (!userData) {
+            setOpenLogin(true)
+            return
+        }
+        if (!heroPrompt.trim()) return
+        localStorage.setItem("aether_prompt", heroPrompt.trim())
+        navigate("/generate")
+    }
     return (
         <div className='relative min-h-screen bg-[#0C0414] text-white overflow-hidden'>
             <style>
@@ -160,28 +189,50 @@ function Home() {
           </div>
         </nav>
 
-        <div className="p-px rounded-full bg-linear-to-r from-indigo-900 to-[#5F5F5F] mt-32">
+                <div className="p-px rounded-full bg-linear-to-r from-indigo-900 to-[#5F5F5F] mt-28">
           <div className="flex flex-wrap items-center justify-center gap-2 p-2 px-4 rounded-full bg-[#0C0414]">
-            <p className="text-sm text-slate-200">⚡ AI-Powered Website Generator</p>
+            <p className="text-sm text-slate-200">AI-Powered Website Generator</p>
           </div>
         </div>
 
-        <h1 className="text-4xl md:text-[66px]/[72px] text-center max-w-4xl mt-6 bg-linear-to-r from-[#231233] via-[#F5F5F5] to-[#231233] text-transparent bg-clip-text leading-tight px-4">
-          Design, Build & Launch Websites with AI in Minutes
+        <h1 className="text-4xl md:text-[64px]/[70px] text-center max-w-4xl mt-6 bg-linear-to-r from-[#231233] via-[#F5F5F5] to-[#231233] text-transparent bg-clip-text leading-tight px-4">
+          Generate & Publish Websites in Minutes
         </h1>
-        <p className="text-sm md:text-base bg-linear-to-r from-[#231233] via-[#F5F5F5] to-[#231233] text-transparent bg-clip-text text-center max-w-lg mt-4 px-4">
-          Create production-ready websites and UI components instantly with AI-generated layouts, code and design systems.
+        <p className="text-sm md:text-base text-slate-200/70 text-center max-w-lg mt-3 px-4">
+          1 prompt - live site. Built for solo creators and indie builders.
         </p>
 
-        <div className='flex gap-3 mt-7'>
+        <div className="w-full max-w-3xl px-4 mt-6">
+          <div className="rounded-2xl bg-white/5 border border-white/10 p-4 md:p-5">
+            <textarea
+              value={heroPrompt}
+              onChange={(e) => setHeroPrompt(e.target.value)}
+              placeholder="Describe your website in one or two sentences..."
+              className="w-full h-24 md:h-28 bg-transparent text-sm md:text-base text-white placeholder-zinc-500 outline-none resize-none"
+            />
+            <div className="flex flex-wrap gap-2 mt-3">
+              {promptExamples.map((ex, i) => (
+                <button
+                  key={i}
+                  onClick={() => setHeroPrompt(ex)}
+                  className="text-xs text-zinc-300 border border-white/10 bg-white/5 hover:bg-white/10 rounded-full px-3 py-1"
+                >
+                  {`Example ${i + 1}`}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className='flex flex-wrap gap-3 mt-6 justify-center'>
           <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
-            <button className="px-6 py-3 text-xs md:text-sm text-white rounded-full font-medium bg-gray-800" onClick={() => setOpenLogin(true)}>
-              Get Started
+            <button className="px-6 py-3 text-xs md:text-sm text-white rounded-full font-medium bg-gray-800" onClick={handleHeroGenerate}>
+              Generate Your Website
             </button>
           </div>
           <div className="button-bg rounded-full p-0.5 hover:scale-105 transition duration-300 active:scale-100">
             <button className="px-6 py-3 text-xs md:text-sm text-white rounded-full font-medium bg-gray-800" onClick={() => userData? navigate("/dashboard"):setOpenLogin(true)}>
-              {userData ? "Explore Dashboard" : "Explore templates"}
+              {userData ? "Explore Dashboard" : "Explore Templates"}
             </button>
           </div>
         </div>
@@ -259,4 +310,10 @@ function Home() {
 }
 
 export default Home
+
+
+
+
+
+
 
